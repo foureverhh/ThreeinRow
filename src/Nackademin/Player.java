@@ -7,6 +7,10 @@ public class Player extends Board{
     private String name;
 
 
+    public Player(int rowAndCol)
+    {
+        super(rowAndCol);
+    }
     public Player()
     {
 
@@ -18,6 +22,11 @@ public class Player extends Board{
         this.name = s;
     }
 
+    public String getName()
+    {
+        return name;
+    }
+
     public void setChessLabel()
     {
         String s = JOptionPane.showInputDialog("Hi, "+ this.name + ". Input your chess label");
@@ -25,29 +34,21 @@ public class Player extends Board{
     }
 
 
-    public void setChessCoordinate(int x,int y,String chessLabel)
-    {
-        super.placeChess(x,y,chessLabel);
-    }
-
-
-
-
-
     public void setChessCoordinateX()
     {
-        String s = JOptionPane.showInputDialog("Hi "+ this.name + ",your turn input your chess coordinate x:");
+        String s = JOptionPane.showInputDialog("Hi "+ this.name + " ,your turn to input your chess coordinate x:");
         x = Integer.parseInt(s);
-        super.setX(x);
+        this.x = x-1;
+
     }
 
 
     public void setChessCoordinateY()
     {
-        String s = JOptionPane.showInputDialog("And "+ this.name + "your chess coordinate y:");
-        x = Integer.parseInt(s);
-        super.setY(y);
-        this.gameIsOn =true;
+        String s = JOptionPane.showInputDialog("And "+ this.name + " ,continue to input your chess coordinate y:");
+        y = Integer.parseInt(s);
+        this.y = y-1;
+
     }
 
 

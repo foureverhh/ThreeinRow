@@ -9,9 +9,12 @@ public class Board {
     protected int rowAndCol, blockAmount;   //To decide how big a board would be, to count how many blocks left on the board
     protected String[][] board;       //To make a board
     protected int x, y;   //To create the coordinate for a chess
-    protected boolean gameIsOn;
+
     protected String chessLabel;
 
+    protected boolean gameIsOn;     //To judge whether a new board is needed
+    protected boolean gameRestart;      //To judge whether a game should go on or not
+    protected boolean blockIsTaken;     //To judge whether a block is taken or not
 
 
 // Constructor
@@ -21,17 +24,18 @@ public class Board {
         this.board = new String[rowAndCol][rowAndCol];
         this.blockAmount = rowAndCol*rowAndCol;
 
+
+
+
     }
     public Board()
     {
 
     }
 
-
-
 //Methods
     //Create an empty two dimentional array
-    public void boardLayout()
+    public void cleanBoard()
     {
 
         for(int i = 0; i<this.rowAndCol; i++)
@@ -44,19 +48,29 @@ public class Board {
     //print out an empty board
     public void printBoard()
     {
-        //Create a board
+
         if(gameIsOn)
         {
-            //At beginning create an empty board
+        //show all chess
             System.out.println("Enjoy your game!!");
-            placeChess( x,y,chessLabel);
+            showBoard();
+
         }
         else {
-            //After game began, show all chess
-            System.out.println("Here is your chess board:");
-            boardLayout();
+
+            //New chess board
+            System.out.println("Here is your new chess board:");
+            cleanBoard();
+            showBoard();
         }
 
+
+
+
+    }
+
+    public void showBoard()
+    {
         //print the board
         for(int k=0;k<this.rowAndCol;k++)
             System.out.print(" ---");
@@ -76,33 +90,86 @@ public class Board {
             }
             System.out.println();
         }
-
-
     }
 
-    //Calculate how many block left
+    //To check how many blocks left,when no block left turn gameIsOn to false
     public void leftBlockAmount()
     {
 
-        blockAmount--;
+        blockAmount-=2;
+        if(blockAmount==0)
+        {
+            gameRestart = true;    //No blocks left need to restart
+            gameIsOn = false;   //No blocks left, game stops.
+            System.out.println("Game is over! Let us have a new board!");
+        }
     }
 
-    //Create a chess coordinate and place it on board
-    public void placeChess(int x, int y,String s)
+    //Create a chess coordinate and place player's chess  on board
+    public void placeChess(Player p) //(Player thisPlayer, Player otherPlayer)
     {
 
-        board[x][y]=s;
+        if (board[p.x][p.y].equals(" "))
+        {
+            this.board[p.x][p.y] = p.chessLabel;
+            blockIsTaken=true;
+
+        } else
+        {
+            while(!blockIsTaken) {
+                System.out.println("The block is taken, " + p.getName() + ", you should choose again!");
+                p.setChessCoordinateX();
+                p.setChessCoordinateY();
+                if(board[p.x][p.y].equals(" ")) {
+                    this.board[p.x][p.y] = p.chessLabel;
+                    blockIsTaken = true;
+                }
+            }
+        }
+
+
+         /*
+        *
+        * if(this.board[x][y].equals(""))
+        {
+            this.board[thisPlayer.x][thisPlayer.y]= thisPlayer.chessLabel;
+            this.board[otherPlayer.x][otherPlayer.y] = otherPlayer.chessLabel;
+        }
+        else
+        {
+            System.out.println("The block is taken, choose again!");
+            blockIsTaken=true;
+        }*/
+
+
+        /*
+        * //TO check whether the block chosen by thisPlayer is taken or not
+        if (board[thisPlayer.x][thisPlayer.y].equals(" "))
+        {
+            this.board[thisPlayer.x][thisPlayer.y] = thisPlayer.chessLabel;
+
+        } else
+        {
+            System.out.println("The block is taken, "+ thisPlayer.getName()+"choose again!");
+            blockIsTaken=true;
+
+        }
+        //TO check whether the block chosen by otherPlayer is taken or not
+        if(this.board[otherPlayer.x][otherPlayer.y].equals(" "))
+        {
+            this.board[otherPlayer.x][otherPlayer.y] = otherPlayer.chessLabel;
+        }else
+        {
+            System.out.println("The block is taken, "+ otherPlayer.getName()+"choose again!");
+            blockIsTaken=true;
+
+        }*/
+        //this.board[p.x][p.y] = p.chessLabel;
 
     }
 
 
-    public void setX(int x) {
-        this.x = x;
-    }
 
-    public void setY(int y) {
-        this.y = y;
-    }
 
     public int getBlockAmount() {
         return blockAmount;
