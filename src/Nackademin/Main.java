@@ -15,22 +15,26 @@ public class Main
         p2.setName();
         p2.setChessLabel();
 
-        p1.printBoard();  //Print out a new empty chessboard
+        p1.printBoard(p1,p2);  //Print out a new empty chessboard
 
-        p1.gameIsOn = true; //New games is moving further on
+        p1.gameIsOn = true; // Game is moving further on
 
-        p1.setChessCoordinateX();
-        p1.setChessCoordinateY();
+        while(p1.gameIsOn)
+        {
+            p1.setChessCoordinateX();
+            p1.setChessCoordinateY();
 
-        p1.placeChess(p1);
-        p1.printBoard();
+            p1.placeChess(p1);
+            p1.printBoard(p1,p2);
+            p1.leftBlockAmount();
 
-        p2.setChessCoordinateX();
-        p2.setChessCoordinateY();
+            p2.setChessCoordinateX();
+            p2.setChessCoordinateY();
 
-        p1.placeChess(p2);
-        p1.printBoard();
-
+            p1.placeChess(p2);
+            p1.printBoard(p1,p2);
+            p1.leftBlockAmount();
+        }
         /*
         while (!p1.needNewBoard) {
             while (!p1.blockIsTaken) {

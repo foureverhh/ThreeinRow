@@ -35,7 +35,7 @@ public class Board {
 
 //Methods
     //Create an empty two dimentional array
-    public void cleanBoard()
+    public void brandnewBoard()
     {
 
         for(int i = 0; i<this.rowAndCol; i++)
@@ -46,21 +46,21 @@ public class Board {
     }
 
     //print out an empty board
-    public void printBoard()
+    public void printBoard(Player p1,Player p2)
     {
 
         if(gameIsOn)
         {
         //show all chess
-            System.out.println("Enjoy your game!!");
+            System.out.println(p1.getName()+" "+p2.getName()+"Enjoy your game!!");
             showBoard();
 
         }
         else {
 
             //New chess board
-            System.out.println("Here is your new chess board:");
-            cleanBoard();
+            System.out.println(p1.getName()+" "+p2.getName()+"Here is your new chess board:");
+            brandnewBoard();
             showBoard();
         }
 
@@ -96,12 +96,12 @@ public class Board {
     public void leftBlockAmount()
     {
 
-        blockAmount-=2;
+        blockAmount--;
         if(blockAmount==0)
         {
             gameRestart = true;    //No blocks left need to restart
             gameIsOn = false;   //No blocks left, game stops.
-            System.out.println("Game is over! Let us have a new board!");
+            System.out.println("All blocks are used up");
         }
     }
 
@@ -109,21 +109,26 @@ public class Board {
     public void placeChess(Player p) //(Player thisPlayer, Player otherPlayer)
     {
 
-        if (board[p.x][p.y].equals(" "))
+        if (board[p.x][p.y]==" ")
         {
             this.board[p.x][p.y] = p.chessLabel;
-            blockIsTaken=true;
 
-        } else
+        }
+
+        else
         {
             while(!blockIsTaken) {
-                System.out.println("The block is taken, " + p.getName() + ", you should choose again!");
+                System.out.println(p.getName() +", the block you chose is taken. Choose again!");
+
                 p.setChessCoordinateX();
                 p.setChessCoordinateY();
-                if(board[p.x][p.y].equals(" ")) {
+                if(board[p.x][p.y]==" ")
+                {
                     this.board[p.x][p.y] = p.chessLabel;
                     blockIsTaken = true;
                 }
+
+
             }
         }
 
