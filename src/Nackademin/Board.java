@@ -1,4 +1,6 @@
 package Nackademin;
+import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
+
 import java.lang.*;
 
 
@@ -52,14 +54,14 @@ public class Board {
         if(gameIsOn)
         {
         //show all chess
-            System.out.println(p1.getName()+" "+p2.getName()+"Enjoy your game!!");
+            System.out.println(p1.getName()+" "+p2.getName()+". Enjoy your game!!");
             showBoard();
 
         }
         else {
 
             //New chess board
-            System.out.println(p1.getName()+" "+p2.getName()+"Here is your new chess board:");
+            System.out.println(p1.getName()+" "+p2.getName()+" Here is your new chess board:");
             brandnewBoard();
             showBoard();
         }
@@ -105,32 +107,50 @@ public class Board {
         }
     }
 
-    //Create a chess coordinate and place player's chess  on board
+    //Create a chess coordinate and place  the  chess  on board
     public void placeChess(Player p) //(Player thisPlayer, Player otherPlayer)
     {
+        p.setChessCoordinateX();
+        p.setChessCoordinateY();
 
-        if (board[p.x][p.y]==" ")
+        while (!(board[p.x][p.y].equals(" ") || board[p.x][p.y].isEmpty()))
+        {
+            System.out.println(p.getName() +", the block you chose is taken. Choose again!");
+            p.setChessCoordinateX();
+            p.setChessCoordinateY();
+
+        }
+        this.board[p.x][p.y] = p.chessLabel;
+        leftBlockAmount();
+        System.out.println(blockAmount);
+
+        /*if (board[p.x][p.y].equals(" ") || board[p.x][p.y].isEmpty())
         {
             this.board[p.x][p.y] = p.chessLabel;
-
+            leftBlockAmount();
+            System.out.println(blockAmount);
         }
 
         else
         {
-            while(!blockIsTaken) {
+
+
+
+            while(!blockIsTaken)
+            {
                 System.out.println(p.getName() +", the block you chose is taken. Choose again!");
 
                 p.setChessCoordinateX();
                 p.setChessCoordinateY();
-                if(board[p.x][p.y]==" ")
+                if(board[p.x][p.y].equals(" ")||board[p.x][p.y].isEmpty())
                 {
                     this.board[p.x][p.y] = p.chessLabel;
+                    leftBlockAmount();
+                    System.out.println(blockAmount);
                     blockIsTaken = true;
                 }
-
-
             }
-        }
+        }*/
 
 
          /*

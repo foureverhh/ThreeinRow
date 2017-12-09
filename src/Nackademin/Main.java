@@ -21,19 +21,15 @@ public class Main
 
         while(p1.gameIsOn)
         {
-            p1.setChessCoordinateX();
-            p1.setChessCoordinateY();
+
 
             p1.placeChess(p1);
             p1.printBoard(p1,p2);
-            p1.leftBlockAmount();
 
-            p2.setChessCoordinateX();
-            p2.setChessCoordinateY();
 
             p1.placeChess(p2);
             p1.printBoard(p1,p2);
-            p1.leftBlockAmount();
+
         }
         /*
         while (!p1.needNewBoard) {
