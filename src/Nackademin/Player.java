@@ -39,7 +39,6 @@ public class Player extends Board{
         String s = JOptionPane.showInputDialog("Hi "+ this.name + " ,your turn to input your chess coordinate x:");
         x = Integer.parseInt(s);
         this.x = x-1;
-
     }
 
 
@@ -48,7 +47,6 @@ public class Player extends Board{
         String s = JOptionPane.showInputDialog("And "+ this.name + " ,continue to input your chess coordinate y:");
         y = Integer.parseInt(s);
         this.y = y-1;
-
     }
 
 

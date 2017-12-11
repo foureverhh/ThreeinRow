@@ -1,6 +1,7 @@
 package Nackademin;
 import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
 
+import javax.swing.*;
 import java.lang.*;
 
 
@@ -16,7 +17,7 @@ public class Board {
 
     protected boolean gameIsOn;     //To judge whether a new board is needed
     protected boolean gameRestart;      //To judge whether a game should go on or not
-    protected boolean blockIsTaken;     //To judge whether a block is taken or not
+
 
 
 // Constructor
@@ -25,10 +26,6 @@ public class Board {
         this.rowAndCol = rowAndCol;
         this.board = new String[rowAndCol][rowAndCol];
         this.blockAmount = rowAndCol*rowAndCol;
-
-
-
-
     }
     public Board()
     {
@@ -43,8 +40,6 @@ public class Board {
         for(int i = 0; i<this.rowAndCol; i++)
             for(int j =0; j<this.rowAndCol; j++)
                 board[i][j]=(" ");
-
-
     }
 
     //print out an empty board
@@ -65,10 +60,6 @@ public class Board {
             brandnewBoard();
             showBoard();
         }
-
-
-
-
     }
 
     public void showBoard()
@@ -102,7 +93,7 @@ public class Board {
         if(blockAmount==0)
         {
             gameRestart = true;    //No blocks left need to restart
-            gameIsOn = false;   //No blocks left, game stops.
+            gameIsOn = false;      //No blocks left, game stops.
             System.out.println("All blocks are used up");
         }
     }
@@ -120,80 +111,95 @@ public class Board {
             p.setChessCoordinateY();
 
         }
+
         this.board[p.x][p.y] = p.chessLabel;
         leftBlockAmount();
         System.out.println(blockAmount);
+    }
 
-        /*if (board[p.x][p.y].equals(" ") || board[p.x][p.y].isEmpty())
+    //Scan the board to check who is the winner
+    public void checkWinner(Player p)
+    {
+        horizontallyCheck(p);             // Check board in the direction of -
+        verticallyCheck(p);               // Check board in the direction of |
+        diagonallyCheckBackslash(p);      // Check board in the direction of \
+        diagonallyCheckSlash(p);          // Check board in the direction of /
+    }
+
+    //Show winner's name on the board
+    public void showWinner(Player p)
+    {
+        gameIsOn = false;      //Got a winner, game stops.
+        gameRestart = true;      //Got a winner, game need to restart.
+        JOptionPane.showMessageDialog(null,"Winner is "+ p.getName());
+    }
+
+    //To check whether player wins horizontally
+    public void horizontallyCheck(Player p)
+    {
+        int i=0;
+        while(i<board.length)
         {
-            this.board[p.x][p.y] = p.chessLabel;
-            leftBlockAmount();
-            System.out.println(blockAmount);
-        }
-
-        else
-        {
-
-
-
-            while(!blockIsTaken)
-            {
-                System.out.println(p.getName() +", the block you chose is taken. Choose again!");
-
-                p.setChessCoordinateX();
-                p.setChessCoordinateY();
-                if(board[p.x][p.y].equals(" ")||board[p.x][p.y].isEmpty())
+            for(int j=0;j<board.length-1;j++) {
+                //if each previous block holds the player's chess label
+                //and all the next block has same  value to its previous one horizontally.
+                if (board[i][j].equals(p.chessLabel)&&board[i][j].equals(board[i][j+1]))
                 {
-                    this.board[p.x][p.y] = p.chessLabel;
-                    leftBlockAmount();
-                    System.out.println(blockAmount);
-                    blockIsTaken = true;
+                    showWinner(p);
+                    break;
                 }
             }
-        }*/
 
-
-         /*
-        *
-        * if(this.board[x][y].equals(""))
-        {
-            this.board[thisPlayer.x][thisPlayer.y]= thisPlayer.chessLabel;
-            this.board[otherPlayer.x][otherPlayer.y] = otherPlayer.chessLabel;
+            i++;
         }
-        else
-        {
-            System.out.println("The block is taken, choose again!");
-            blockIsTaken=true;
-        }*/
-
-
-        /*
-        * //TO check whether the block chosen by thisPlayer is taken or not
-        if (board[thisPlayer.x][thisPlayer.y].equals(" "))
-        {
-            this.board[thisPlayer.x][thisPlayer.y] = thisPlayer.chessLabel;
-
-        } else
-        {
-            System.out.println("The block is taken, "+ thisPlayer.getName()+"choose again!");
-            blockIsTaken=true;
-
-        }
-        //TO check whether the block chosen by otherPlayer is taken or not
-        if(this.board[otherPlayer.x][otherPlayer.y].equals(" "))
-        {
-            this.board[otherPlayer.x][otherPlayer.y] = otherPlayer.chessLabel;
-        }else
-        {
-            System.out.println("The block is taken, "+ otherPlayer.getName()+"choose again!");
-            blockIsTaken=true;
-
-        }*/
-        //this.board[p.x][p.y] = p.chessLabel;
-
     }
 
 
+    //To check whether player wins vertically
+    public void verticallyCheck(Player p)
+    {
+        int j=0;
+        while(j<board.length)
+        {
+            for(int i=0;i<board.length-1;i++)
+            {
+                if(board[i][j].equals(p.chessLabel)&&board[i][j].equals(board[i+1][j]))
+                {
+                    showWinner(p);
+                    break;
+                }
+            }
+            j++;
+        }
+    }
+
+    //To check whether player wins diagonally, slash
+    public void diagonallyCheckSlash(Player p)
+    {
+
+        for(int i=0;i<board.length-1;i++)
+        {
+            if(board[i][i].equals(p.chessLabel)&&board[i][i].equals(board[i+1][i+1]))
+            {
+                showWinner(p);
+                break;
+            }
+        }
+    }
+
+    //To check whether player wins diagonally, backslash
+    public void diagonallyCheckBackslash(Player p)
+    {
+        for(int i=0;i<board.length-1;i++)
+        {
+            if(board[i][board.length-1-i].equals(p.chessLabel)
+                    &&board[i][board.length-1-i].equals(board[i+1][board.length-1-i+1]))
+            {
+                showWinner(p);
+                break;
+            }
+        }
+    }
 
 
     public int getBlockAmount() {

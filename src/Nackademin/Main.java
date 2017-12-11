@@ -22,50 +22,18 @@ public class Main
         while(p1.gameIsOn)
         {
 
-
+            //Player 1 choose his/her own block and place the chess
             p1.placeChess(p1);
+            //Print out the current board
             p1.printBoard(p1,p2);
+            //Check winner
+            p1.horizontallyCheck(p1);
 
-
+            //Player 2 choose his//her own block and place the chess
             p1.placeChess(p2);
+            //Print out the current board
             p1.printBoard(p1,p2);
 
         }
-        /*
-        while (!p1.needNewBoard) {
-            while (!p1.blockIsTaken) {
-
-                //Player 1 puts a chess on the board
-                p1.setChessCoordinateX();
-                p1.setChessCoordinateY();
-
-                p1.placeChess(p1);
-                p1.printBoard();
-
-                //Player 2 puts a chess on the board
-                p2.setChessCoordinateX();
-                p2.setChessCoordinateY();
-
-                p1.placeChess(p2);
-                p1.printBoard();
-
-
-            }
-            p1.leftBlockAmount();
-        }
-        */
-
-/*
-//To ask player whether to create a new game
-            String newGame = JOptionPane.showInputDialog("Do you want to start a new game? (Y/N)");
-            if (newGame.toLowerCase().equals("n"))
-            {
-                p1.gameRestart = false;
-                System.out.println("Bye Bye!");
-            }else{
-                p1.needNewBoard = true;
-                System.out.println("New game begin");
-            }
-            */
     }
 }
