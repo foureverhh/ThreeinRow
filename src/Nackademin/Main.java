@@ -7,7 +7,7 @@ public class Main
 
     public static void main(String[] args) {
         //Create board and players
-        Player p1 = new Player(2);
+        Player p1 = new Player(4);
         Player p2 = new Player();
 
         p1.setName();
@@ -27,12 +27,17 @@ public class Main
             //Print out the current board
             p1.printBoard(p1,p2);
             //Check winner
-            p1.horizontallyCheck(p1);
+            p1.checkWinner(p1);
+            if(!p1.gameIsOn)
+                break;
 
             //Player 2 choose his//her own block and place the chess
             p1.placeChess(p2);
             //Print out the current board
             p1.printBoard(p1,p2);
+            p1.checkWinner(p2);
+            if(!p1.gameIsOn)
+                break;
 
         }
     }

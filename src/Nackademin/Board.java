@@ -10,15 +10,16 @@ public class Board {
 
 
     protected int rowAndCol, blockAmount;   //To decide how big a board would be, to count how many blocks left on the board
+
     protected String[][] board;       //To make a board
-    protected int x, y;   //To create the coordinate for a chess
+    protected int x, y;               //To create the coordinate for a chess
 
     protected String chessLabel;
 
     protected boolean gameIsOn;     //To judge whether a new board is needed
     protected boolean gameRestart;      //To judge whether a game should go on or not
 
-
+    protected int winPoint;
 
 // Constructor
     public Board(int rowAndCol)
@@ -109,7 +110,6 @@ public class Board {
             System.out.println(p.getName() +", the block you chose is taken. Choose again!");
             p.setChessCoordinateX();
             p.setChessCoordinateY();
-
         }
 
         this.board[p.x][p.y] = p.chessLabel;
@@ -120,18 +120,80 @@ public class Board {
     //Scan the board to check who is the winner
     public void checkWinner(Player p)
     {
-        horizontallyCheck(p);             // Check board in the direction of -
-        verticallyCheck(p);               // Check board in the direction of |
-        diagonallyCheckBackslash(p);      // Check board in the direction of \
-        diagonallyCheckSlash(p);          // Check board in the direction of /
+        horizontallyCheck2(p);             // Check board in the direction of -
+        //verticallyCheck(p);               // Check board in the direction of |
+        //diagonallyCheckBackslash(p);      // Check board in the direction of \
+        //diagonallyCheckSlash(p);          // Check board in the direction of /
     }
 
     //Show winner's name on the board
     public void showWinner(Player p)
     {
-        gameIsOn = false;      //Got a winner, game stops.
-        gameRestart = true;      //Got a winner, game need to restart.
-        JOptionPane.showMessageDialog(null,"Winner is "+ p.getName());
+        this.gameIsOn = false;      //Got a winner, game stops.
+        this.gameRestart = true;      //Got a winner, game need to restart.
+        p.winPoint++;
+        JOptionPane.showMessageDialog(null,"Congratulation, winner is: "+ p.getName()
+                +"\nYou have won "+p.winPoint+" times.");
+    }
+
+
+    //To check whether player wins horizontally  Cindy's help
+    public void horizontallyCheck1(Player p)
+    {
+        int i=0;
+        while(i<board.length)
+        {
+            int n = 0;
+            for(int j=0;j<board.length-1;j++) {
+                //if each previous block holds the player's chess label
+                //and all the next block has same  value to its previous one horizontally.
+                System.out.println(i);
+                System.out.println(j);
+                System.out.println(board[i][j+1]);
+                System.out.println(board.length);
+                if (!board[i][j].equals(board[i][j+1]))
+                {
+                    break;
+                }
+
+                if (board[i][j].equals(p.chessLabel))
+                {
+                    n++;
+                }
+
+            }
+
+            if (n == board.length-1)
+                showWinner(p);
+            i++;
+        }
+    }
+
+    //To check whether player wins horizontally
+    public void horizontallyCheck2(Player p)
+    {
+        int i=0;
+        while(i<board.length)
+        {
+            int k=0;
+            for(int j=0;j<board.length;j++) {
+                //if each previous block holds the player's chess label
+                //and all the next block has same  value to its previous one horizontally.
+                if (board[i][j].equals(p.chessLabel)) {
+                    k++;
+                } else {
+                    break;
+                }
+
+            }
+            if(k==board.length)
+            {
+                showWinner(p);
+                break;
+            }
+            i++;
+        }
+
     }
 
     //To check whether player wins horizontally
@@ -143,9 +205,22 @@ public class Board {
             for(int j=0;j<board.length-1;j++) {
                 //if each previous block holds the player's chess label
                 //and all the next block has same  value to its previous one horizontally.
-                if (board[i][j].equals(p.chessLabel)&&board[i][j].equals(board[i][j+1]))
+                System.out.println(i);
+                System.out.println(j);
+                System.out.println(board[i][j+1]);
+                System.out.println(board.length);
+                if (board[i][j].equals(board[i][j+1]))
                 {
-                    showWinner(p);
+                   while(j<board.length)
+                   {
+                       if(board[i][j].equals(p.chessLabel))
+                       {
+                           showWinner(p);
+                       }
+                       j++;
+                   }
+                }
+                else{
                     break;
                 }
             }
@@ -161,15 +236,34 @@ public class Board {
         int j=0;
         while(j<board.length)
         {
-            for(int i=0;i<board.length-1;i++)
-            {
-                if(board[i][j].equals(p.chessLabel)&&board[i][j].equals(board[i+1][j]))
+            for(int i=0;i<board.length-1;i++){
+                if(board[i][j].equals(board[i + 1][j]))
                 {
-                    showWinner(p);
+                    if(board[i][j].equals(p.chessLabel))
+                        showWinner(p);
+                }else
+                {
                     break;
                 }
             }
             j++;
+            /*
+            for(int i=0;i<board.length-1;i++)
+            {
+                if (!(board[i][j].equals(board[i + 1][j])))
+                 {
+                    break;
+                }
+            }
+
+            for(int i=0;i<board.length-1;i++)
+            {
+                if(board[i][j].equals(p.chessLabel))
+                {
+                    showWinner(p);
+                }
+            }
+            */
         }
     }
 
@@ -179,10 +273,13 @@ public class Board {
 
         for(int i=0;i<board.length-1;i++)
         {
-            if(board[i][i].equals(p.chessLabel)&&board[i][i].equals(board[i+1][i+1]))
+            if(!(board[i][i].equals(board[i+1][i+1])))
+            {
+                break;
+            }
+            if(board[i][i].equals(p.chessLabel))
             {
                 showWinner(p);
-                break;
             }
         }
     }
@@ -192,11 +289,14 @@ public class Board {
     {
         for(int i=0;i<board.length-1;i++)
         {
-            if(board[i][board.length-1-i].equals(p.chessLabel)
-                    &&board[i][board.length-1-i].equals(board[i+1][board.length-1-i+1]))
+            if(!(board[i][board.length-1-i].equals(board[i+1][board.length-1-i-1])))
+            {
+
+                break;
+            }
+            if(board[i][board.length-1-i].equals(p.chessLabel))
             {
                 showWinner(p);
-                break;
             }
         }
     }
