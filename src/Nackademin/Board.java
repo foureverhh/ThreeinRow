@@ -50,14 +50,14 @@ public class Board {
         if(gameIsOn)
         {
         //show all chess
-            System.out.println(p1.getName()+" "+p2.getName()+". Enjoy your game!!");
+            System.out.println("Welcome "+p1.getName()+" and "+p2.getName()+". Enjoy your game!!");
             showBoard();
 
         }
         else {
 
             //New chess board
-            System.out.println(p1.getName()+" "+p2.getName()+" Here is your new chess board:");
+            System.out.println("Hi, "+p1.getName()+" and "+p2.getName()+" . Here is your new chess board:");
             brandnewBoard();
             showBoard();
         }
@@ -120,10 +120,10 @@ public class Board {
     //Scan the board to check who is the winner
     public void checkWinner(Player p)
     {
-        horizontallyCheck2(p);             // Check board in the direction of -
+        //horizontallyCheck(p);             // Check board in the direction of -
         //verticallyCheck(p);               // Check board in the direction of |
         //diagonallyCheckBackslash(p);      // Check board in the direction of \
-        //diagonallyCheckSlash(p);          // Check board in the direction of /
+        diagonallyCheckSlash(p);          // Check board in the direction of /
     }
 
     //Show winner's name on the board
@@ -137,40 +137,8 @@ public class Board {
     }
 
 
-    //To check whether player wins horizontally  Cindy's help
-    public void horizontallyCheck1(Player p)
-    {
-        int i=0;
-        while(i<board.length)
-        {
-            int n = 0;
-            for(int j=0;j<board.length-1;j++) {
-                //if each previous block holds the player's chess label
-                //and all the next block has same  value to its previous one horizontally.
-                System.out.println(i);
-                System.out.println(j);
-                System.out.println(board[i][j+1]);
-                System.out.println(board.length);
-                if (!board[i][j].equals(board[i][j+1]))
-                {
-                    break;
-                }
-
-                if (board[i][j].equals(p.chessLabel))
-                {
-                    n++;
-                }
-
-            }
-
-            if (n == board.length-1)
-                showWinner(p);
-            i++;
-        }
-    }
-
     //To check whether player wins horizontally
-    public void horizontallyCheck2(Player p)
+    public void horizontallyCheck(Player p)
     {
         int i=0;
         while(i<board.length)
@@ -196,109 +164,90 @@ public class Board {
 
     }
 
-    //To check whether player wins horizontally
-    public void horizontallyCheck(Player p)
-    {
-        int i=0;
-        while(i<board.length)
-        {
-            for(int j=0;j<board.length-1;j++) {
-                //if each previous block holds the player's chess label
-                //and all the next block has same  value to its previous one horizontally.
-                System.out.println(i);
-                System.out.println(j);
-                System.out.println(board[i][j+1]);
-                System.out.println(board.length);
-                if (board[i][j].equals(board[i][j+1]))
-                {
-                   while(j<board.length)
-                   {
-                       if(board[i][j].equals(p.chessLabel))
-                       {
-                           showWinner(p);
-                       }
-                       j++;
-                   }
-                }
-                else{
-                    break;
-                }
-            }
-
-            i++;
-        }
-    }
-
-
     //To check whether player wins vertically
     public void verticallyCheck(Player p)
     {
         int j=0;
         while(j<board.length)
         {
-            for(int i=0;i<board.length-1;i++){
-                if(board[i][j].equals(board[i + 1][j]))
+            int k = 0;
+            for(int i=0;i<board.length;i++){
+                if(board[i][j].equals(p.chessLabel))
                 {
-                    if(board[i][j].equals(p.chessLabel))
-                        showWinner(p);
+                        k++;
                 }else
                 {
                     break;
                 }
             }
+            if(k==board.length)
+            {
+                showWinner(p);
+                break;
+            }
             j++;
-            /*
-            for(int i=0;i<board.length-1;i++)
-            {
-                if (!(board[i][j].equals(board[i + 1][j])))
-                 {
-                    break;
-                }
-            }
-
-            for(int i=0;i<board.length-1;i++)
-            {
-                if(board[i][j].equals(p.chessLabel))
-                {
-                    showWinner(p);
-                }
-            }
-            */
         }
     }
 
     //To check whether player wins diagonally, slash
-    public void diagonallyCheckSlash(Player p)
+    public void diagonallyCheckBackslash(Player p)
     {
-
-        for(int i=0;i<board.length-1;i++)
+        int k=0;
+        for(int i=0;i<board.length;i++)
         {
-            if(!(board[i][i].equals(board[i+1][i+1])))
-            {
-                break;
-            }
             if(board[i][i].equals(p.chessLabel))
             {
-                showWinner(p);
+                k++;
+                if(k==board.length)
+                {
+                    showWinner(p);
+                    break;
+                }
+            }else
+            {
+                break;
             }
         }
     }
 
     //To check whether player wins diagonally, backslash
-    public void diagonallyCheckBackslash(Player p)
+    public void diagonallyCheckSlash(Player p)
     {
-        for(int i=0;i<board.length-1;i++)
+        int k=0;
+        for(int i=0;i<board.length;i++)
         {
-            if(!(board[i][board.length-1-i].equals(board[i+1][board.length-1-i-1])))
-            {
-
-                break;
-            }
             if(board[i][board.length-1-i].equals(p.chessLabel))
             {
-                showWinner(p);
+                k++;
+                if(k==board.length)
+                {
+                    showWinner(p);
+                    break;
+                }
+            }else
+            {
+                break;
             }
         }
+
+        /*for(int i=0;i<board.length;i++)
+        {
+            int k=0; //Wrong, if k is here would k never rise
+
+            if(board[i][board.length-1-i].equals(p.chessLabel))
+            {
+                k++;
+            }else
+            {
+                break;
+            }
+
+            if(k==board.length)
+            {
+                showWinner(p);
+                break;
+            }
+        }*/
     }
 
 
