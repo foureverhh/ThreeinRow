@@ -7,13 +7,17 @@ public class Main
 
     public static void main(String[] args) {
         //Create board and players
-        Player p1 = new Player(3);
-        Player p2 = new Player();
+        String s =JOptionPane.showInputDialog("Input how many rows you want to have:");
+        int rowSize = Integer.parseInt(s);
+        Player p1 = new Player(rowSize);
+        Player p2 = new MachinePlayer(rowSize);
 
-        p1.setName();
-        p1.setChessLabel();
-        p2.setName();
-        p2.setChessLabel();
+        s = "";
+
+        p1.setName(s);
+        p1.setChessLabel(s);
+        p2.setName(s);
+        p2.setChessLabel(s);
 
         while(!p1.gameRestart)
         {
@@ -24,7 +28,7 @@ public class Main
             while (p1.gameIsOn) {
 
                 //Player 1 choose his/her own block and place the chess
-                p1.placeChess(p1);
+                p1.placeChess1(p1);
                 //Print out the current board
                 p1.printBoard(p1, p2);
                 //Check winner
@@ -33,7 +37,7 @@ public class Main
                     break;
 
                 //Player 2 choose his//her own block and place the chess
-                p1.placeChess(p2);
+                p1.placeChess2(p2);
                 //Print out the current board
                 p1.printBoard(p1, p2);
                 p1.checkWinner(p2, p1);

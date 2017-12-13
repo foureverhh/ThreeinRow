@@ -4,21 +4,22 @@ import javax.swing.*;
 
 public class Player extends Board{
 
-    private String name;
+    protected String name;
 
 
     public Player(int rowAndCol)
     {
         super(rowAndCol);
     }
+
     public Player()
     {
 
     }
 
-    public void setName()
+    public void setName(String s)
     {
-        String s = JOptionPane.showInputDialog("Input player's name here please");
+        s = JOptionPane.showInputDialog("Input player 1's name here please");
         this.name = s;
     }
 
@@ -27,10 +28,10 @@ public class Player extends Board{
         return name;
     }
 
-    public void setChessLabel()
+    public void setChessLabel(String s)
     {
-        String s = JOptionPane.showInputDialog("Hi, "+ this.name + ". Input your chess label");
-        this.chessLabel = s;
+         s = JOptionPane.showInputDialog("Hi, "+ this.name + ". Input your chess label");
+         chessLabel = s;
     }
 
 

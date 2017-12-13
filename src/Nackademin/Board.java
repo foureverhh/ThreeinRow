@@ -126,7 +126,7 @@ public class Board {
         {
             gameIsOn = false;
             JOptionPane.showMessageDialog(null, "All blocks are used up, No winner this round!"
-                    + "\n" + playerCheck.getName() + " won " + playerCheck.winPoint + " times." + "/n" +
+                    + "\n" + playerCheck.getName() + " won " + playerCheck.winPoint + " times." + "\n" +
                     otherPlayer.getName() + " won " + otherPlayer.winPoint + " times.");
 
             gameRestart(playerCheck,otherPlayer);
@@ -135,13 +135,37 @@ public class Board {
     }
 
     //Create a chess coordinate and place  the  chess  on board
-    public void placeChess(Player p)
+    public void placeChess2(MachinePlayer p)
     {
         p.setChessCoordinateX();
         p.setChessCoordinateY();
 
         while (!(board[p.x][p.y].equals(" ") || board[p.x][p.y].isEmpty()))
         {
+            if(p.getPlayerIsMachine())
+            {
+                p.setChessCoordinateX();
+                p.setChessCoordinateY();
+            }else {
+                System.out.println(p.getName() + ", the block you chose is taken. Choose again!");
+                p.setChessCoordinateX();
+                p.setChessCoordinateY();
+            }
+        }
+
+        this.board[p.x][p.y] = p.chessLabel;
+        blockAmount--;
+        //System.out.println(blockAmount);
+    }
+
+    public void placeChess1(Player p)
+    {
+        p.setChessCoordinateX();
+        p.setChessCoordinateY();
+
+        while (!(board[p.x][p.y].equals(" ") || board[p.x][p.y].isEmpty()))
+        {
+
             System.out.println(p.getName() +", the block you chose is taken. Choose again!");
             p.setChessCoordinateX();
             p.setChessCoordinateY();
@@ -260,5 +284,10 @@ public class Board {
             }
         }
 
+    }
+
+    public int getRowAndCol()
+    {
+        return rowAndCol;
     }
 }
