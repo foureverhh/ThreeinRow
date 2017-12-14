@@ -4,7 +4,7 @@ import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
 
 import javax.swing.*;
 import java.lang.*;
-
+import java.util.Random;
 
 
 public class Board {
@@ -13,7 +13,7 @@ public class Board {
     private int rowAndCol, blockAmount;   //To decide how big a board would be, to count how many blocks left on the board
     protected int winPoint;
     private String[][] board;       //To make a board
-    protected int x, y;               //To create the coordinate for a chess
+    private int x, y;               //To create the coordinate for a chess
 
     protected String chessLabel;
     private String winner;
@@ -111,70 +111,48 @@ public class Board {
     //or show game is even, and print
     public void showGameResult(Player playerCheck,Player otherPlayer)
     {
-        if(winner!=null)
-        {
             gameIsOn = false;        //Got a winner, game stops.
             playerCheck.winPoint++;
 
             JOptionPane.showMessageDialog(null, "Congratulation, winner is: " + winner
-                    + "\n" + winner + " won " + playerCheck.winPoint + " times." + "/n" +
+                    + "\n" + winner + " won " + playerCheck.winPoint + " times." + "\n" +
                     otherPlayer.getName() + " won " + otherPlayer.winPoint + " times.");
 
             gameRestart(playerCheck,otherPlayer);
 
-        }else if(blockAmount==0)
-        {
-            gameIsOn = false;
-            JOptionPane.showMessageDialog(null, "All blocks are used up, No winner this round!"
-                    + "\n" + playerCheck.getName() + " won " + playerCheck.winPoint + " times." + "\n" +
-                    otherPlayer.getName() + " won " + otherPlayer.winPoint + " times.");
-
-            gameRestart(playerCheck,otherPlayer);
-
-        }
     }
 
     //Create a chess coordinate and place  the  chess  on board
-    public void placeChess2(MachinePlayer p)
+    public void placeChess(Player p)
     {
-        p.setChessCoordinateX();
-        p.setChessCoordinateY();
-
-        while (!(board[p.x][p.y].equals(" ") || board[p.x][p.y].isEmpty()))
+        if(p.getPlayerIsMachine())
+        {
+            Random r = new Random();
+            p.setX(r.nextInt(p.getRowAndCol()));
+            p.setY(r.nextInt(p.getRowAndCol()));
+        }else {
+            p.setChessCoordinateX();
+            p.setChessCoordinateY();
+        }
+        while (!(this.board[p.getX()][p.getY()].equals(" ") || this.board[p.getX()][p.getY()].isEmpty()))
         {
             if(p.getPlayerIsMachine())
             {
-                p.setChessCoordinateX();
-                p.setChessCoordinateY();
+                Random r = new Random();
+                p.setX(r.nextInt(p.getRowAndCol()));
+                p.setY(r.nextInt(p.getRowAndCol()));
             }else {
                 System.out.println(p.getName() + ", the block you chose is taken. Choose again!");
                 p.setChessCoordinateX();
                 p.setChessCoordinateY();
             }
         }
-
-        this.board[p.x][p.y] = p.chessLabel;
+        this.board[p.getX()][p.getY()] = p.chessLabel;
         blockAmount--;
         //System.out.println(blockAmount);
     }
 
-    public void placeChess1(Player p)
-    {
-        p.setChessCoordinateX();
-        p.setChessCoordinateY();
 
-        while (!(board[p.x][p.y].equals(" ") || board[p.x][p.y].isEmpty()))
-        {
-
-            System.out.println(p.getName() +", the block you chose is taken. Choose again!");
-            p.setChessCoordinateX();
-            p.setChessCoordinateY();
-        }
-
-        this.board[p.x][p.y] = p.chessLabel;
-        blockAmount--;
-        //System.out.println(blockAmount);
-    }
 
 
 
@@ -185,6 +163,16 @@ public class Board {
         verticallyCheck(playerCheck,otherPlayer);               // Check board in the direction of |
         diagonallyCheckBackslash(playerCheck,otherPlayer);      // Check board in the direction of \
         diagonallyCheckSlash(playerCheck,otherPlayer);          // Check board in the direction of /
+
+        if((playerCheck.getBlockAmount()==0))
+        {
+            gameIsOn = false;
+            JOptionPane.showMessageDialog(null, "All blocks are used up, No winner this round!"
+                    + "\n" + playerCheck.getName() + " won " + playerCheck.winPoint + " times." + "\n" +
+                    otherPlayer.getName() + " won " + otherPlayer.winPoint + " times.");
+
+            gameRestart(playerCheck,otherPlayer);
+        }
     }
 
 
@@ -206,10 +194,14 @@ public class Board {
             }
             if(k==board.length)
             {
-                winner = playerCheck.getName(); //To judge whether here is a winner or not
+                this.winner = playerCheck.getName(); //To judge whether here is a winner or not
                 showGameResult(playerCheck,otherPlayer);
                 break;
+            }else {
+
+                break;
             }
+
             i++;
         }
 
@@ -289,5 +281,26 @@ public class Board {
     public int getRowAndCol()
     {
         return rowAndCol;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setX(int x) {
+
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public int getBlockAmount() {
+        return blockAmount;
     }
 }

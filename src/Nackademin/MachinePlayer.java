@@ -18,8 +18,7 @@ public class MachinePlayer extends Player{
 
     }
 
-    @Override
-    public void setName(String s)
+ /*public void setName(String s)
     {
         s = JOptionPane.showInputDialog("Want to play with a Machine player?(y/n)");
         if(s.toLowerCase().equals("y"))
@@ -85,4 +84,6 @@ public class MachinePlayer extends Player{
     {
         return playerIsMachine;
     }
+    */
+
 }
